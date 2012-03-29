@@ -5,6 +5,7 @@ t1=`grep '==== ok ====' $1 | awk '{print $2}'`
 while [ "$t1" != "ok" ]
 do
     ps=`ps ax > /tmp/ps.txt`
+    sleep 1
     p2=`egrep $2 /tmp/ps.txt | egrep -v pscheck | egrep -v xargs | awk '{print $5}'`
     p3=`egrep $3 /tmp/ps.txt | egrep -v pscheck | egrep -v xargs | awk '{print $5}'`
     p4=`egrep $4 /tmp/ps.txt | egrep -v pscheck | egrep -v xargs | awk '{print $5}'`
