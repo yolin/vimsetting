@@ -19,3 +19,6 @@
 [submodule "bundle/CRefVim"]
 	path = bundle/CRefVim
 	url = git://github.com/vim-scripts/CRefVim.git
+[submodule "bundle/Command-T"]
+	path = bundle/Command-T
+	url = https://github.com/wincent/Command-T.git
