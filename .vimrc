@@ -2,6 +2,8 @@
 call pathogen#helptags()
 call pathogen#runtime_append_all_bundles() 
 
+"helptags ~/.vim/bundle/CRefVim/doc
+
 " Enable filetype plugin
 set nocompatible
 set nu
@@ -83,6 +85,7 @@ endfunction
 "autocmd SessionLoadPost *.cpp,*.h,*.c call AutoReflash()
 "autocmd WinEnter *.cpp,*.h,*.c call AutoReflash()
 
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
 "a.vim
 let g:alternateSearchPath = 'sfr:./h,sfr:./include,sfr:./source,sfr:./src,sfr:./,sfr:./inc,sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
@@ -589,8 +592,8 @@ let g:reflash_flag = 0
 let g:myGrepName = ""
 let g:myGrepDir = "/"
 "we find the file before grep, so we neednot use option -r
-let g:myGrepOption = "-snI"
-let g:myGrepFiletype = "*"
+let g:myGrepOption = "-i"
+let g:myGrepFiletype = ""
 let g:myGrepWholeName = "true"
 let g:myGrepCmd = ""
 let g:myGrepIndex = 0
@@ -634,25 +637,32 @@ function! ShowMyGrep()
 
     let flag = 0
     let i = 1
-    let fttemp = split(g:myGrepFiletype,',')
-    let findfiletype = '-name "'.fttemp[0]
-    while flag == 0
-        let a = exists("fttemp[i]")
-        if (a != 0)
-            let findfiletype = findfiletype.'" -o -name "'.fttemp[i]
-            let i += 1
-        else
-            let findfiletype = findfiletype.'"'
-            let flag = 1
-        endif
-    endwhile
+    "let fttemp = split(g:myGrepFiletype,',')
+    "let findfiletype = '-name "'.fttemp[0]
+    "while flag == 0
+    "    let a = exists("fttemp[i]")
+    "    if (a != 0)
+    "        let findfiletype = findfiletype.'" -o -name "'.fttemp[i]
+    "        let i += 1
+    "    else
+    "        let findfiletype = findfiletype.'"'
+    "        let flag = 1
+    "    endif
+    "endwhile
     if(g:myGrepWholeName=="true")
         let grepname = '"'.g:myGrepName.'"'
     else
         let grepname = g:myGrepName
     endif
 
-    let g:myGrepCmd = 'find '.g:myGrepDir.' '.findfiletype.' | xargs -l10 egrep '.g:myGrepOption.' '.grepname
+    "let g:myGrepCmd = 'find '.g:myGrepDir.' '.findfiletype.' | xargs -l10 egrep '.g:myGrepOption.' '.grepname
+
+    if(g:myGrepFiletype!="")
+        let findfiletype = g:myGrepFiletype
+    else
+        let findfiletype = ''
+    endif
+        let g:myGrepCmd = 'ack-grep -H --nocolor --nogroup --column '.findfiletype.' '.g:myGrepOption.' '.grepname.' '.g:myGrepDir
 
     let tmp = [ 'command:'.g:myGrepCmd, ' 1) Name:'.g:myGrepName, ' 2) Dir:'.g:myGrepDir, ' 3) Option:'.g:myGrepOption, ' 4) File type:'.g:myGrepFiletype, ' 5) Match all:'.g:myGrepWholeName] 
 
@@ -701,7 +711,8 @@ function! RecMyGrep()
             redraw!
             let g:reflash_flag = 0
             let recursive = 0
-            execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep xxxxxxx &'
+            "execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep xxxxxxx &'
+            execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep /usr/bin/ack-grep &'
         endif
     elseif(action == 2 || action ==5 )
         if(g:myGrepIndex == 1)
@@ -742,7 +753,7 @@ function! RecMyGrep()
             if (action ==5)
                 let tmp = input("Filetype:","")
             else
-                let tmp = input("Filetype:","*")
+                let tmp = input("Filetype:","")
             endif
             if(tmp!="")
                 let g:myGrepFiletype = tmp
@@ -1084,6 +1095,7 @@ function! MyReflashOpen()
         "execute 'silent! !~/.vim/pscheck.sh '.filename.' find egrep xxxxxxx'
         execute 'silent! !cp '.filename.' '.filename.'.tmp'
         redraw!
+
         execute "silent! cgetfile ".filename.'.tmp'
         let &efm = old_efm
         if(bufname("%")== '') "quickfix

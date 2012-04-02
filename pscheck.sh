@@ -6,9 +6,12 @@ while [ "$t1" != "ok" ]
 do
     ps=`ps ax > /tmp/ps.txt`
     sleep 1
-    p2=`egrep $2 /tmp/ps.txt | egrep -v pscheck | egrep -v xargs | awk '{print $5}'`
-    p3=`egrep $3 /tmp/ps.txt | egrep -v pscheck | egrep -v xargs | awk '{print $5}'`
-    p4=`egrep $4 /tmp/ps.txt | egrep -v pscheck | egrep -v xargs | awk '{print $5}'`
+    p2=`egrep $2 /tmp/ps.txt | egrep -v pscheck | awk '{print $5}'`
+    p3=`egrep $3 /tmp/ps.txt | egrep -v pscheck | awk '{print $5}'`
+    p4=`egrep $4 /tmp/ps.txt | egrep -v pscheck | awk '{print $6}'` #ack-grep
+    echo $p1 >> /tmp/test1
+    echo $p2 >> /tmp/test1
+    echo $p3 >> /tmp/test1
     if [ "$p2" != "$2" ] && [ "$p3" != "$3" ] && [ "$p4" != "$4" ]; then
             echo "==== ok ====" >> $1
     fi
@@ -22,7 +25,7 @@ do
         echo "==== search too long ====" >> $1
         break
     fi
-    vimcheck=`egrep vim | egrep -v pscheck | awk '{print $5}'`
+    vimcheck=`egrep vim /tmp/ps.txt | egrep -v pscheck | awk '{print $5}'`
     if [ "$vimcheck" != "vim" ]; then
         break
     fi
