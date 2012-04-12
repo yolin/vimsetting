@@ -746,9 +746,6 @@ function! RecMyGrep()
             else
                 let tmp = input("options:","")
             endif
-            if(tmp!="")
-                let g:myGrepOption = tmp
-            endif
         elseif(g:myGrepIndex == 4)
             echo "\n"
             if (action ==5)
