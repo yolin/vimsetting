@@ -123,6 +123,7 @@ noremap <xF1> <esc>:TlistToggle<cr>:call MySwitchToWorkBuf()<cr>
 noremap <leader><xF2> <esc>:NERDTreeFind<cr>
 noremap <xF2> <esc>:NERDTreeToggle<cr>
 noremap <xF3> <esc>:call MySwitchToWorkBuf()<cr>:let g:myGrepDir = "<c-r>=getcwd()<cr>/"<cr>:call MyGrep()<cr>
+noremap <xF4> <esc>:call MySwitchToWorkBuf()<cr>:call MyDirDiff()<cr>
 "map <xF4> <esc>:call MySavePrePos()<cr>]`zz:call MySaveNextPos()<cr>:call MyCircleMark()<cr>
 "map <xF4> <esc>:call MyReplace()<cr>
 "map <xF4> <esc>:FufFile<cr>
@@ -743,7 +744,7 @@ function! RecMyGrep()
             if (action ==5)
                 let tmp = input("options:","")
             else
-                let tmp = input("options:(don't use r)","-isnI")
+                let tmp = input("options:","")
             endif
             if(tmp!="")
                 let g:myGrepOption = tmp
@@ -913,6 +914,119 @@ function! RecMyReplace()
     endif
     return recursive
 endf
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" myDirDiff by Yolin 
+"
+"
+"
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:myDirDiffName1 = ""
+let g:myDirDiffName2 = ""
+let g:myDirDiffCmd = ""
+let g:myDirDiffIndex = 0
+let g:myDiffMenuIndex = 0
+
+function! MyDirDiff()
+    let tmp = 1
+    while tmp != 0 
+            let tmp = RecMyDirDiff()
+            if tmp ==1
+                let g:myMenuIndex = 0
+            elseif tmp == 3
+                let g:myMenuIndex = 0
+            elseif tmp == 4
+                let g:myMenuIndex = 0
+            endif
+            if tmp == 0
+                redraw!
+                return
+            endif
+    endwhile
+    return 0
+endf
+
+function! ShowMyDirDiff()
+    redraw!
+    
+    let startidx = 0
+    let endidx = 2
+
+    let g:myDirDiffCmd = ':DirDiff '.g:myDirDiffName1.' '.g:myDirDiffName2
+    let tmp = [ 'command:'.g:myDirDiffCmd,' 1) Folder 1:'.g:myDirDiffName1, ' 2) Folder 2:'.g:myDirDiffName2 ] 
+
+    echo '= DirDiff v0.0 ='
+    echo '-----------------------------------------'
+    let sting = ' '
+    let i = 0
+    while i <= endidx 
+        if( g:myDirDiffIndex == i )
+            let string = '>'.tmp[i]
+        else
+            let string = ' '.tmp[i]
+        endif
+        echo string
+        let i += 1
+    endwhile
+    echo '-----------------------------------------'
+    echo 'Usage: <F12> start, <q> quit'
+    
+    let idxdo = [0,0] "return index and options
+    let idxdo =  MyGetInput(startidx,endidx,g:myDirDiffIndex)
+    let g:myDirDiffIndex = idxdo[0]
+    return idxdo[1]
+endf
+"command! -nargs=* -complete=file ShowMyReplace call ShowMyReplace()
+
+function! RecMyDirDiff()
+    let action = ShowMyDirDiff()
+    let recursive = 1
+    if(action == 0)
+        redraw!
+    elseif(action == 1) "press <f12>
+        redraw!
+        let recursive = 0
+        execute g:myDirDiffCmd
+        redraw!
+    elseif (action == 2 || action == 5)
+        if(g:myDirDiffIndex==1)
+            echo "\n"
+            if (action ==5)
+                let tmp = input("Name1:","","file")
+            else
+                let tmp = input("Name1:",g:myDirDiffName1,"file")
+            endif
+            if(tmp!="")
+                let g:myDirDiffName1 = tmp
+            endif
+            if(!isdirectory(g:myDirDiffName1))
+                let g:myDirDiffName1 = expand(getcwd())
+            endif
+        elseif(g:myDirDiffIndex==2)
+            echo "\n"
+            if (action ==5)
+                let tmp = input("Name2:","","file")
+            else
+                let tmp = input("Name2:",g:myDirDiffName2,"file")
+            endif
+            if(tmp!="")
+                let g:myDirDiffName2 = tmp
+            endif
+            if(!isdirectory(g:myDirDiffName2))
+                let g:myDirDiffName2 = expand(getcwd())
+            endif
+        endif
+    elseif( action == -1)
+        let recursive = 0
+    elseif( action == 4 )
+        let recursive = 4
+    elseif( action == 3 )
+        let recursive = 3
+    endif
+    return recursive
+endf
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " myGenTag by Yolin 
