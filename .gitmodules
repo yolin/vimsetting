@@ -10,9 +10,6 @@
 [submodule "bundle/vcscommand"]
 	path = bundle/vcscommand
 	url = git://github.com/vim-scripts/vcscommand.vim
-[submodule "bundle/fuzzyfinder"]
-	path = bundle/fuzzyfinder
-	url = git://github.com/vim-scripts/FuzzyFinder.git
 [submodule "bundle/bufexplorer"]
 	path = bundle/bufexplorer
 	url = git://github.com/vim-scripts/bufexplorer.zip

@@ -2,6 +2,9 @@
 call pathogen#helptags()
 call pathogen#runtime_append_all_bundles() 
 
+""change to hex :%! xxd
+""revert :%! xxd -r
+
 "helptags ~/.vim/bundle/CRefVim/doc
 
 " Enable filetype plugin
@@ -112,11 +115,6 @@ let NERDTreeWinPos="right"
 "map
 set winaltkeys=no
 
-noremap mf <esc>:FufFile<cr>
-noremap mb <esc>:FufBuffer<cr>
-noremap mm <esc>:FufBookmarkFileAdd<cr><cr>
-noremap ms <esc>:FufBookmarkFile<cr>
-
 nnoremap <space><space> :noh<cr>:call MySwitchToWorkBuf()<cr>
 
 noremap <xF1> <esc>:TlistToggle<cr>:call MySwitchToWorkBuf()<cr>
@@ -186,11 +184,11 @@ inoremap <c-xRight> <esc><c-w>l
 "
 "inoremap <m-xLeft> <esc>:call MyShiftBuf(-1)<cr>
 "inoremap <m-xRight> <esc>:call MyShiftBuf(1)<cr>
-noremap <m-xLeft> <esc>:bp<cr>
-noremap <m-xRight> <esc>:bn<cr>
+noremap <m-xLeft> <esc>:tabprevious<cr>
+noremap <m-xRight> <esc>:tabNext<cr>
 
-inoremap <m-xLeft> <esc>:bp<cr>
-inoremap <m-xRight> <esc>:bn<cr>
+inoremap <m-xLeft> <esc>:tabprevious<cr>
+inoremap <m-xRight> <esc>:tabNext<cr>
 
 "nnoremap <c-v> <c-r>+
 vnoremap <c-x> "+x
@@ -950,7 +948,7 @@ function! ShowMyDirDiff()
     let startidx = 0
     let endidx = 2
 
-    let g:myDirDiffCmd = ':DirDiff '.g:myDirDiffName1.' '.g:myDirDiffName2
+    let g:myDirDiffCmd = 'DirDiff '.g:myDirDiffName1.' '.g:myDirDiffName2
     let tmp = [ 'command:'.g:myDirDiffCmd,' 1) Folder 1:'.g:myDirDiffName1, ' 2) Folder 2:'.g:myDirDiffName2 ] 
 
     echo '= DirDiff v0.0 ='
@@ -985,6 +983,7 @@ function! RecMyDirDiff()
         redraw!
         let recursive = 0
         execute g:myDirDiffCmd
+        let g:reflash_flag = 2
         redraw!
     elseif (action == 2 || action == 5)
         if(g:myDirDiffIndex==1)
@@ -1176,11 +1175,13 @@ endfunction
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! MyReflashOpen()
-    let old_efm = &efm
-    if(bufname("%")== '') "quickfix
-        let savepos = line('.')
+    if(g:reflash_flag!=2)
+        let old_efm = &efm
+        if(bufname("%")== '') "quickfix
+            let savepos = line('.')
+        endif
+        set efm=%f:%\\s%#%l:%m
     endif
-    set efm=%f:%\\s%#%l:%m
     if(g:reflash_flag==0)
         if !exists("g:grep_tmpfile")
             echohl ErrorMsg | echo "MyGrep must be run first" | echohl None
@@ -1218,6 +1219,8 @@ function! MyReflashOpen()
         execute "silent! cs kill -1"
         execute "silent! cs add ".g:myGenTagDir
         execute "cs show"
+    elseif(g:reflash_flag==2) "DirDiff
+        execute "silent! DirDiffUpdate"
     endif
     return
 endfunction
