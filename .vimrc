@@ -1,6 +1,8 @@
 "getplugin
 call pathogen#helptags()
 call pathogen#runtime_append_all_bundles() 
+"replace
+"%s/\(xxxx\)/(\1)/gci
 
 ""change to hex :%! xxd
 ""revert :%! xxd -r
@@ -116,6 +118,9 @@ let NERDTreeWinPos="right"
 set winaltkeys=no
 
 nnoremap <space><space> :noh<cr>:call MySwitchToWorkBuf()<cr>
+
+nnoremap `<esc> :q<cr>
+
 
 noremap <xF1> <esc>:TlistToggle<cr>:call MySwitchToWorkBuf()<cr>
 noremap <leader><xF2> <esc>:NERDTreeFind<cr>
@@ -307,8 +312,17 @@ endif
 
 
 set hlsearch
-colors yzlin256
-"colors yolin
+" =============================================================================
+" SET THE GUI COLOR SCHEME
+" =============================================================================
+"
+" colorscheme, options for GUI
+if has("gui_running")
+    colorscheme sonoma
+else
+    colors yzlin256
+endif
+
 
 filetype on
 filetype plugin on
