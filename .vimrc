@@ -223,7 +223,8 @@ nnoremap <leader>aq <ESC>:qa<cr>
 "au Filetype html,htm,xml,xsl source ~/.vim/scripts/closetag.vim
 "autocmd VimEnter * source ~/.vim/Session.vim 
 au BufRead * set expandtab softtabstop=4 shiftwidth=4
-au BufRead *.ISD set noexpandtab softtabstop=8 shiftwidth=8
+au BufRead *.make set filetype=make noexpandtab softtabstop=8 shiftwidth=8
+au BufRead *.ISD set filetype=make noexpandtab softtabstop=8 shiftwidth=8
 au BufRead *.in set noexpandtab softtabstop=4 shiftwidth=8
 au BufRead Makefile set noexpandtab softtabstop=8 shiftwidth=8
 au BufRead *.htm set filetype=htmlm4 noexpandtab softtabstop=8 shiftwidth=8
