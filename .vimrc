@@ -3,6 +3,19 @@ call pathogen#helptags()
 call pathogen#runtime_append_all_bundles() 
 "replace
 "%s/\(xxxx\)/(\1)/gci
+"
+"build the vim by your self
+"==============================
+"./configure --prefix=/usr --sysconfdir=/etc --enable-tclinterp --enable-pythoninterp --enable-perlinterp --enable-rubyinterp --enable-cscope --enable-multibyte --enable-xim --enable-gtk2-check --enable-fontset --with-x
+"
+"[root@fedora vim73]# make
+"
+"[root@fedora vim73]# make install
+"=============================
+"
+"
+"
+"
 
 ""change to hex :%! xxd
 ""revert :%! xxd -r
@@ -195,6 +208,13 @@ noremap <m-xRight> <esc>:tabNext<cr>
 inoremap <m-xLeft> <esc>:tabprevious<cr>
 inoremap <m-xRight> <esc>:tabNext<cr>
 
+
+noremap <m-xUp> <esc>:bp<cr>
+noremap <m-xDown> <esc>:bn<cr>
+
+inoremap <m-xUp> <esc>:bp<cr>
+inoremap <m-xDown> <esc>:bn<cr>
+
 "nnoremap <c-v> <c-r>+
 vnoremap <c-x> "+x
 vnoremap <c-c> "+y
@@ -267,13 +287,15 @@ if has("cscope")
     "nnoremap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>:bot cw<CR>:wincmd j<CR>
 
     nmap <LEADER>s :cs find s <C-R>=expand("<cword>")<CR><CR>:bot cw<CR>:wincmd j<CR>
-    "nmap <LEADER>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\> :cs find s <C-R>=expand("<cword>")<CR><CR>:bot cw<CR>:wincmd j<CR>
+    nmap <LEADER>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]> :cs find g <C-R>=expand("<cword>")<CR><CR>
     "nmap <LEADER>c :cs find c <C-R>=expand("<cword>")<CR><CR>
     "nmap <LEADER>t :cs find t <C-R>=expand("<cword>")<CR><CR>
     "nmap <LEADER>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <LEADER>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    "nmap <LEADER>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
     "nmap <LEADER>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <LEADER>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+    "nmap <LEADER>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
     " makes the vim window split horizontally, with search result displayed in
