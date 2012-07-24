@@ -133,7 +133,7 @@ else
     hi Directory        cterm=NONE      ctermfg=46      ctermbg=NONE
     hi LineNr           cterm=NONE      ctermfg=240     ctermbg=232
     hi NonText          cterm=BOLD      ctermfg=63      ctermbg=NONE
-    hi SpecialKey       cterm=BOLD      ctermfg=135     ctermbg=NONE
+    hi SpecialKey       cterm=BOLD      ctermfg=240     ctermbg=NONE
     hi Title            cterm=BOLD      ctermfg=124     ctermbg=NONE
     hi Visual           cterm=NONE      ctermfg=231     ctermbg=61
 

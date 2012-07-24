@@ -86,11 +86,11 @@ set tw=500
 
 set wrap "Wrap lines
 
-"set list
-"set listchars=tab:\|\ 
+set list
+set listchars=tab:\|\ 
 "supertab
 "minibuf
-"
+
 au BufWinEnter \[Buf\ List\] setl nonumber
 
 function! AutoReflash()
