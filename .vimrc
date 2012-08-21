@@ -203,10 +203,10 @@ inoremap <c-xRight> <esc><c-w>l
 "inoremap <m-xLeft> <esc>:call MyShiftBuf(-1)<cr>
 "inoremap <m-xRight> <esc>:call MyShiftBuf(1)<cr>
 noremap <m-xLeft> <esc>:tabprevious<cr>
-noremap <m-xRight> <esc>:tabNext<cr>
+noremap <m-xRight> <esc>:tabnext<cr>
 
 inoremap <m-xLeft> <esc>:tabprevious<cr>
-inoremap <m-xRight> <esc>:tabNext<cr>
+inoremap <m-xRight> <esc>:tabnext<cr>
 
 
 noremap <m-xUp> <esc>:bp<cr>
@@ -221,7 +221,7 @@ vnoremap <c-c> "+y
 vnoremap <c-v> "+p
 inoremap <c-z> <esc>ui
 
-inoremap <c-v> <space><esc>:set paste<cr>i<del><c-r>+<esc>:set nopaste<cr>i
+inoremap <c-v> <space><esc>:set paste<cr>i<del><c-r>+<esc>:set nopaste<cr>a
 "nnoremap <leader>u <ESC>:silent! !~/.vim/gentag.sh <c-r>=getcwd()<cr> &<cr>
 inoremap <c-s> <ESC>:call MySwitchToWorkBuf()<cr>:update<cr>
 nnoremap <c-s> <ESC>:call MySwitchToWorkBuf()<cr>:update<cr>
@@ -630,7 +630,7 @@ let g:myGrepDir = "/"
 "we find the file before grep, so we neednot use option -r
 let g:myGrepOption = "-i"
 let g:myGrepFiletype = ""
-let g:myGrepWholeName = "true"
+let g:myGrepWholeName = "false"
 let g:myGrepCmd = ""
 let g:myGrepIndex = 0
 function! MyGrep()
@@ -822,7 +822,7 @@ let g:myReplaceName = ""
 let g:myReplaceToName = ""
 let g:myReplaceOption = "gce"
 let g:myReplaceDir = ""
-let g:myReplaceWholeName = "true"
+let g:myReplaceWholeName = "false"
 let g:myReplaceCmd = "" 
 let g:myReplaceIndex = 0
 
