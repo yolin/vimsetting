@@ -102,6 +102,8 @@ function! AutoReflash()
 endfunction
 "autocmd SessionLoadPost *.cpp,*.h,*.c call AutoReflash()
 "autocmd WinEnter *.cpp,*.h,*.c call AutoReflash()
+autocmd VimLeave * call system("xsel -ib", getreg('+'))
+
 
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
@@ -149,7 +151,7 @@ noremap <xF4> <esc>:call MySwitchToWorkBuf()<cr>:call MyDirDiff()<cr>
 noremap <F6> <esc>:call SavePrePos()<cr>[`zz:call SaveNextPos()<cr>:call MyCircleMark(0)<cr>
 noremap <F7> <esc>:call SavePrePos()<cr>]`zz:call SaveNextPos()<cr>:call MyCircleMark(1)<cr>
 noremap <F8> <esc>:BufExplorer<cr>
-noremap <F9> <esc>:set noexpandtab softtabstop=8 shiftwidth=8 tabstop=8
+noremap <F9> <esc>:set noexpandtab softtabstop=8 shiftwidth=4 tabstop=4
 noremap <F10> :set cursorline!<CR><Bar>:echo "Highlight active cursor line: " . strpart("OffOn", 3 * &cursorline, 3)<CR>
 noremap <F11> <esc>:call MyGenTag()<cr>
 noremap <F12> <esc>:call MyReflashOpen()<cr>
