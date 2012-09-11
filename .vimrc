@@ -151,7 +151,7 @@ noremap <xF4> <esc>:call MySwitchToWorkBuf()<cr>:call MyDirDiff()<cr>
 noremap <F6> <esc>:call SavePrePos()<cr>[`zz:call SaveNextPos()<cr>:call MyCircleMark(0)<cr>
 noremap <F7> <esc>:call SavePrePos()<cr>]`zz:call SaveNextPos()<cr>:call MyCircleMark(1)<cr>
 noremap <F8> <esc>:BufExplorer<cr>
-noremap <F9> <esc>:set noexpandtab softtabstop=8 shiftwidth=4 tabstop=4
+noremap <F9> <esc>:set noexpandtab softtabstop=4 shiftwidth=4 tabstop=4
 noremap <F10> :set cursorline!<CR><Bar>:echo "Highlight active cursor line: " . strpart("OffOn", 3 * &cursorline, 3)<CR>
 noremap <F11> <esc>:call MyGenTag()<cr>
 noremap <F12> <esc>:call MyReflashOpen()<cr>
@@ -256,6 +256,8 @@ au BufRead *js.html set filetype=js noexpandtab softtabstop=8 shiftwidth=8
 au BufRead *css.htm set filetype=js noexpandtab softtabstop=8 shiftwidth=8
 au BufRead *css.html set filetype=js noexpandtab softtabstop=8 shiftwidth=8
 "au VimEnter * NERDTreeFind
+"
+"au BufWritePost *.c,*.cpp,*.h silent! !ctags -R &
 set cscopequickfix=s-,c-,d-,i-,t-,e-
 
 if has("cscope")
@@ -1072,6 +1074,7 @@ endf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:CSCOPE_FILE = 'cscope.files'
 let g:CSCOPE_OUT = 'cscope.out'
+let g:myGenCSCOPE_DB = "/CSCOPE"
 let g:myGenTagDir = '/'
 let g:myGenTagFileType = "*.c,*.h,*.cpp,*.htm,*.html,*.js,Makefile.*,Makefile,*.make"
 let g:myGenTagOption = "cscope"
@@ -1147,7 +1150,10 @@ function! RecMyGenTag()
 
         let old_efm = &efm
         set efm=%f:%\\s%#%l:%m
-        execute 'silent! !find '.g:myGenTagDir.' '.findfiletype.' > '.g:myGenTagDir.'/'.g:CSCOPE_FILE. ' && cscope -bkq -i '.g:myGenTagDir.'/'.g:CSCOPE_FILE.' -f '.g:myGenTagDir.'/'.g:CSCOPE_OUT. ' && echo start > '.g:tag_tmpfile. '&& cp ' .g:tag_tmpfile.' '.g:tag_tmpfile.'.tmp &'
+        execute "silent !mkdir -p ".g:myGenCSCOPE_DB.g:myGenTagDir
+        execute 'silent! !find '.g:myGenTagDir.' '.findfiletype.' > '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_FILE. ' && cscope -bkq -i '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_FILE.' -f '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_OUT. ' && echo start > '.g:tag_tmpfile. '&& cp ' .g:tag_tmpfile.' '.g:tag_tmpfile.'.tmp &'
+
+        "echo 'silent! !find '.g:myGenTagDir.' '.findfiletype.' > '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_FILE. ' && cscope -bkq -i '.g:myGenTagDir.'/'.g:CSCOPE_FILE.' -f '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_OUT. ' && echo start > '.g:tag_tmpfile. '&& cp ' .g:tag_tmpfile.' '.g:tag_tmpfile.'.tmp &'
         redraw!
         "execute "silent! cgetfile ".g:tag_tmpfile.'.tmp'
         "execute "silent! cs kill -1"
@@ -1256,7 +1262,7 @@ function! MyReflashOpen()
     elseif(g:reflash_flag==1) "gentag
         "execute 'silent! !~/.vim/pscheck.sh '.filename.' find cscope xxxxx &'
         execute "silent! cs kill -1"
-        execute "silent! cs add ".g:myGenTagDir
+        execute "silent! cs add ".g:myGenCSCOPE_DB.g:myGenTagDir
         execute "cs show"
     elseif(g:reflash_flag==2) "DirDiff
         execute "silent! DirDiffUpdate"
