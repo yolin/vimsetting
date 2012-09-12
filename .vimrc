@@ -257,8 +257,10 @@ au BufRead *css.htm set filetype=js noexpandtab softtabstop=8 shiftwidth=8
 au BufRead *css.html set filetype=js noexpandtab softtabstop=8 shiftwidth=8
 "au VimEnter * NERDTreeFind
 "
-"au BufWritePost *.c,*.cpp,*.h silent! !ctags -R &
+"au BufWritePost *.c,*.cpp,*.h silent! !cscope -bkq -i /CSCOPE/ISD2/MIPS32_APPS/sysconfig/cscope.files -f /CSCOPE/ISD2/MIPS32_APPS/sysconfig/cscope.out &
 set cscopequickfix=s-,c-,d-,i-,t-,e-
+
+let g:myGenCSCOPE_DB = "/CSCOPE"
 
 if has("cscope")
     set cscopetag
@@ -268,17 +270,23 @@ if has("cscope")
     while i < 20
         if filereadable("cscope.out")
             let db = getcwd() . "/cscope.out"
-            "echo db
             let $CSCOPE_DB = db
             cs add $CSCOPE_DB
             let i = 20
         else
-            cd ..
-            let i += 1
+            let db = g:myGenCSCOPE_DB. getcwd() . "/cscope.out"
+            if filereadable(db)
+                let $CSCOPE_DB = db
+                cs add $CSCOPE_DB
+                let i = 20
+            else
+                cd ..
+                let i += 1
+            endif
         endif
     endwhile
-    cs add /CSCOPE/cscope.out
     set cscopeverbose
+
 
 
     "nnoremap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>:bot cw<CR>:wincmd j<CR>
@@ -1074,7 +1082,6 @@ endf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:CSCOPE_FILE = 'cscope.files'
 let g:CSCOPE_OUT = 'cscope.out'
-let g:myGenCSCOPE_DB = "/CSCOPE"
 let g:myGenTagDir = '/'
 let g:myGenTagFileType = "*.c,*.h,*.cpp,*.htm,*.html,*.js,Makefile.*,Makefile,*.make"
 let g:myGenTagOption = "cscope"
