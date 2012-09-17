@@ -1,6 +1,7 @@
 #!/bin/bash
 deffiletype="*.c"
 filetype="*.h *.cpp *.htm *.html *.js Makefile.* Makefile *.make"
+dbfolder="/CSCOPE"
 
 for i in $filetype
 do
@@ -11,7 +12,8 @@ echo $findfiletype
 
 for i in `cat $1`
 do
-    find $i $findfiletype > "/CSCOPE"$i/cscope.files
-    cscope -bkq -i "/CSCOPE"$i/cscope.files -f "/CSCOPE"$i/cscope.out
+    mkdir -p $dbfolder$d
+    find $i $findfiletype > $dbfolder$d/cscope.files
+    cscope -bkq -i $dbfolder$d/cscope.files -f $dbfolder$d/cscope.out
 done
 
