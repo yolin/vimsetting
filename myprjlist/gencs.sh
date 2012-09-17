@@ -10,8 +10,9 @@ done
 findfiletype="-name "$deffiletype" "$findfiletype
 echo $findfiletype
 
-for i in `cat $1`
+for d in `cat $1`
 do
+#    echo $dbfolder$d
     mkdir -p $dbfolder$d
     find $i $findfiletype > $dbfolder$d/cscope.files
     cscope -bkq -i $dbfolder$d/cscope.files -f $dbfolder$d/cscope.out
