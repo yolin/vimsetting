@@ -14,7 +14,7 @@ for d in `cat $1`
 do
 #    echo $dbfolder$d
     mkdir -p $dbfolder$d
-    find $i $findfiletype > $dbfolder$d/cscope.files
+    find $d $findfiletype > $dbfolder$d/cscope.files
     cscope -bkq -i $dbfolder$d/cscope.files -f $dbfolder$d/cscope.out
 done
 
