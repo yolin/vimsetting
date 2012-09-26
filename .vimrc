@@ -285,8 +285,43 @@ if has("cscope")
             endif
         endif
     endwhile
-    set cscopeverbose
 
+
+
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/ATHEROS_APPS/"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/BELKIN_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/COMMON_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/configs"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/crosslibs"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/DLINK_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/extras"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/IODATA_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/KCODES_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/MIPS32"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/MIPS32_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/MIPS32_KNLAPPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/NETCOMM_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/others"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/RALINK_KNL"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/RT_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/RTL_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/SAMPLES"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/scripts"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/SILEX_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/SITECOM_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/SYSTEM_KNLAPPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/TARGET_RAMDISK"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/TR_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/UBICOM"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/UBICOM_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/util"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/vendors"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/VOIP_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/WEB_APPS"
+    execute "cs add " . g:myGenCSCOPE_DB . "/ISD2/ZYXEL_APPS"
+
+
+    set cscopeverbose
 
 
     "nnoremap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>:bot cw<CR>:wincmd j<CR>
@@ -356,6 +391,7 @@ if has("gui_running")
     colorscheme sonoma
 else
     colors yzlin256
+    "colors molokai
 endif
 
 
@@ -640,7 +676,7 @@ let g:reflash_flag = 0
 let g:myGrepName = ""
 let g:myGrepDir = "/"
 "we find the file before grep, so we neednot use option -r
-let g:myGrepOption = "-i"
+let g:myGrepOption = "-irsnI"
 let g:myGrepFiletype = ""
 let g:myGrepWholeName = "false"
 let g:myGrepCmd = ""
@@ -710,7 +746,8 @@ function! ShowMyGrep()
     else
         let findfiletype = ''
     endif
-        let g:myGrepCmd = 'ack-grep -H --nocolor --nogroup --column '.findfiletype.' '.g:myGrepOption.' '.grepname.' '.g:myGrepDir
+    "let g:myGrepCmd = 'ack-grep -H --nocolor --nogroup --column '.findfiletype.' '.g:myGrepOption.' '.grepname.' '.g:myGrepDir
+    let g:myGrepCmd = 'grep '.findfiletype.' '.g:myGrepOption.' '.grepname.' '.g:myGrepDir
 
     let tmp = [ 'command:'.g:myGrepCmd, ' 1) Name:'.g:myGrepName, ' 2) Dir:'.g:myGrepDir, ' 3) Option:'.g:myGrepOption, ' 4) File type:'.g:myGrepFiletype, ' 5) Match all:'.g:myGrepWholeName] 
 
