@@ -683,7 +683,7 @@ let g:myGrepCmd = ""
 let g:myGrepIndex = 0
 function! MyGrep()
     "let g:myGrepDir = expand(getcwd())
-    execute "silent! !killall -q pscheck.sh"
+    execute "silent! !killall -q -9 pscheck.sh"
     let tmp = 1
     while tmp != 0 
         if g:myMenuIndex == 0
@@ -747,7 +747,7 @@ function! ShowMyGrep()
         let findfiletype = ''
     endif
     "let g:myGrepCmd = 'ack-grep -H --nocolor --nogroup --column '.findfiletype.' '.g:myGrepOption.' '.grepname.' '.g:myGrepDir
-    let g:myGrepCmd = 'grep '.findfiletype.' '.g:myGrepOption.' '.grepname.' '.g:myGrepDir
+    let g:myGrepCmd = 'egrep '.findfiletype.' '.g:myGrepOption.' '.grepname.' '.g:myGrepDir
 
     let tmp = [ 'command:'.g:myGrepCmd, ' 1) Name:'.g:myGrepName, ' 2) Dir:'.g:myGrepDir, ' 3) Option:'.g:myGrepOption, ' 4) File type:'.g:myGrepFiletype, ' 5) Match all:'.g:myGrepWholeName] 
 
@@ -797,7 +797,7 @@ function! RecMyGrep()
             let g:reflash_flag = 0
             let recursive = 0
             "execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep xxxxxxx &'
-            execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep /usr/bin/ack-grep &'
+            execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep xxxxxx &'
         endif
     elseif(action == 2 || action ==5 )
         if(g:myGrepIndex == 1)
