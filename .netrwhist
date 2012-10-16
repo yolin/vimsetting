@@ -1,2 +1,11 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/ISD2_VW-J108-TX/vendors/IODATA/WN-G300DGRS'
+let g:netrw_dirhist_2='/ISD2_WN-G300TVR/vendors/IODATA/WN-G300TVR'
+let g:netrw_dirhist_3='/ISD2/vendors/IODATA/WN-G300TVGR'
+let g:netrw_dirhist_4='/root/senaoenv'
+let g:netrw_dirhist_5='/ISD2/MIPS32_APPS/apps_init'
+let g:netrw_dirhist_6='/ISD2/vendors/IODATA/WN-G300TVR/configs'
+let g:netrw_dirhist_7='/ISD2/IODATA_APPS/sxuptp'
+let g:netrw_dirhist_8='/ISD2/MIPS32_APPS/sysconfig/setting'
+let g:netrw_dirhist_9='/ISD2/vendors/IODATA/WN-G300TVR'

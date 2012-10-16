@@ -721,25 +721,12 @@ function! ShowMyGrep()
 
     let flag = 0
     let i = 1
-    "let fttemp = split(g:myGrepFiletype,',')
-    "let findfiletype = '-name "'.fttemp[0]
-    "while flag == 0
-    "    let a = exists("fttemp[i]")
-    "    if (a != 0)
-    "        let findfiletype = findfiletype.'" -o -name "'.fttemp[i]
-    "        let i += 1
-    "    else
-    "        let findfiletype = findfiletype.'"'
-    "        let flag = 1
-    "    endif
-    "endwhile
+
     if(g:myGrepWholeName=="true")
         let grepname = '"'.g:myGrepName.'"'
     else
         let grepname = g:myGrepName
     endif
-
-    "let g:myGrepCmd = 'find '.g:myGrepDir.' '.findfiletype.' | xargs -l10 egrep '.g:myGrepOption.' '.grepname
 
     if(g:myGrepFiletype!="")
         let findfiletype = g:myGrepFiletype
@@ -796,7 +783,6 @@ function! RecMyGrep()
             redraw!
             let g:reflash_flag = 0
             let recursive = 0
-            "execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep xxxxxxx &'
             execute 'silent! !~/.vim/pscheck.sh '.g:grep_tmpfile.' find egrep xxxxxx &'
         endif
     elseif(action == 2 || action ==5 )
@@ -1117,18 +1103,16 @@ endf
 "
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:CSCOPE_FILE = 'cscope.files'
 let g:CSCOPE_OUT = 'cscope.out'
-let g:myGenTagDir = '/'
-let g:myGenTagFileType = "*.c,*.h,*.cpp,*.htm,*.html,*.js,Makefile.*,Makefile,*.make"
-let g:myGenTagOption = "cscope"
+let g:myGenTagThisDir = '/ISD2'
+let g:myGenTagMultiDir = '/ISD2/MIPS32_APPS /ISD2/WEB_APPS/web_IODATA'
 let g:myGenIndex = 1
 "let g:myGenGetcsshow = ""
 
 function! MyGenTag()
     call MySwitchToWorkBuf()
     execute "cs show" 
-    let g:myGenTagDir = expand(getcwd())
+    let g:myGenTagThisDir = expand(getcwd())
     let tmp = 1
     while tmp != 0
         let tmp = RecMyGenTag()
@@ -1144,7 +1128,7 @@ endfunc
 function! ShowMyGenTag()
     let startidx = 0
     let endidx = 7
-    let tmp = ['Gen action:', ' 1) Dir:'.g:myGenTagDir, ' 2) Type:'.g:myGenTagFileType, ' -----------', 'cscope action:', ' 5) Show', ' 6) Add',' 7) Delete']
+    let tmp = ['Press <F12> before 1~3', ' 1) This dir:'.g:myGenTagThisDir, ' 2) Multi dir:'.g:myGenTagMultiDir, ' 3) All default database', 'cscope action:', ' 5) Show', ' 6) Add',' 7) Delete']
     let sting = ' '
     let i = 0
     while i <= endidx 
@@ -1171,64 +1155,40 @@ function! RecMyGenTag()
         redraw!
     elseif(action == 1) "press <f12>
         redraw!
-        let recursive = 0
-        let tmpfile = ''
-        call delete(tmpfile)
-        let g:tag_tmpfile = tempname()
         execute "silent! !killall -q cscope &"
-
-        let fttemp = split(g:myGenTagFileType,',')
-        let findfiletype = '-name "'.fttemp[0]
-        let i = 1
-        let flag = 0
-        while flag == 0
-            let a = exists("fttemp[i]")
-            if (a != 0)
-                let findfiletype = findfiletype.'" -o -name "'.fttemp[i]
-                let i += 1
-            else
-                let findfiletype = findfiletype.'"'
-                let flag = 1
-            endif
-        endwhile
-
-        let old_efm = &efm
-        set efm=%f:%\\s%#%l:%m
-        execute "silent !mkdir -p ".g:myGenCSCOPE_DB.g:myGenTagDir
-        execute 'silent! !find '.g:myGenTagDir.' '.findfiletype.' > '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_FILE. ' && cscope -bkq -i '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_FILE.' -f '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_OUT. ' && echo start > '.g:tag_tmpfile. '&& cp ' .g:tag_tmpfile.' '.g:tag_tmpfile.'.tmp &'
-
-        "echo 'silent! !find '.g:myGenTagDir.' '.findfiletype.' > '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_FILE. ' && cscope -bkq -i '.g:myGenTagDir.'/'.g:CSCOPE_FILE.' -f '.g:myGenCSCOPE_DB.g:myGenTagDir.'/'.g:CSCOPE_OUT. ' && echo start > '.g:tag_tmpfile. '&& cp ' .g:tag_tmpfile.' '.g:tag_tmpfile.'.tmp &'
+        if (g:myGenIndex==1)
+            let recursive = 0
+            execute "silent! !sh ~/.vim/gencs.sh ".g:myGenTagThisDir." &"
+            let g:reflash_flag = 1
+        elseif (g:myGenIndex==2)
+            let recursive = 0
+            execute "silent! !sh ~/.vim/gencs.sh ".g:myGenTagMultiDir." &"
+            let g:reflash_flag = 3
+        elseif (g:myGenIndex==3)
+            let recursive = 0
+            execute 'silent! !sh ~/.vim/gencs.sh&'
+            let g:reflash_flag = 4
+        endif
         redraw!
-        "execute "silent! cgetfile ".g:tag_tmpfile.'.tmp'
-        "execute "silent! cs kill -1"
-        "execute "silent! cs add ".g:myGenTagDir
-        "let &efm = old_efm
-        "botright copen
-        let g:reflash_flag = 1
     elseif(action == 2 || action ==5 )
         if (g:myGenIndex==1)
             if (action ==5)
-                let g:myGenTagDir=input("Dir:","","file")
+                let g:myGenTagThisDir=input("Dir:","","file")
             else
-                let g:myGenTagDir=input("Dir:",expand("%:p:h"),"file")
+                let g:myGenTagThisDir=input("Dir:",expand("%:p:h"),"file")
             endif
             redraw!
         elseif (g:myGenIndex==2)
             if (action ==5)
-                let g:myGenTagFileType=input("File type:","")
+                let g:myGenTagMultiDir=input("Dir:","","file")
             else
-                let g:myGenTagFileType=input("File type:",g:myGenTagFileType)
+                let g:myGenTagMultiDir=input("Dir:",g:myGenTagMultiDir,"file")
             endif
             redraw!
-        "not use
-        " elseif (g:myGenIndex==3)
-        "     if (action ==5)
-        "         let g:myGenTagOption=input("cscope or ctags(both,cscope,ctags):","")
-        "     else
-        "         let g:myGenTagOption=input("cscope or ctags(both,cscope,ctags):",g:myGenTagOption)
-        "     endif
-        "     redraw!
-        "--not use
+        elseif (g:myGenIndex==3)
+            redraw!
+        elseif (g:myGenIndex==4)
+            redraw!
         elseif(g:myGenIndex == 5)
             redraw!
             execute 'cs show'
@@ -1279,21 +1239,17 @@ function! MyReflashOpen()
             let filename = g:grep_tmpfile
         endif
     elseif(g:reflash_flag==1)
-        if !exists("g:tag_tmpfile")
-            echohl ErrorMsg | echo "MyGenTag must be run first" | echohl None
-            return
-        else
-            let filename = g:tag_tmpfile
-        endif
+        let filename = g:myGenCSCOPE_DB.g:myGenTagThisDir."/".g:CSCOPE_OUT
     endif
     
-    if !filereadable(filename)
-        echohl ErrorMsg | echo "Cannot open : " . filename | echohl None
-        return
+    if(g:reflash_flag!=3) "multi folder gen
+        if !filereadable(filename)
+            echohl ErrorMsg | echo "Cannot open : " . filename | echohl None
+            return
+        endif
     endif
 
     if(g:reflash_flag==0)
-        "execute 'silent! !~/.vim/pscheck.sh '.filename.' find egrep xxxxxxx'
         execute 'silent! !cp '.filename.' '.filename.'.tmp'
         redraw!
 
@@ -1304,13 +1260,16 @@ function! MyReflashOpen()
             execute savepos
         endif
     elseif(g:reflash_flag==1) "gentag
-        "execute 'silent! !~/.vim/pscheck.sh '.filename.' find cscope xxxxx &'
-        execute "silent! cs kill -1"
-        execute "silent! cs add ".g:myGenCSCOPE_DB.g:myGenTagDir
-        execute "cs show"
+        "execute "silent! cs kill -1"
+        execute "silent! cs reset"
+        "execute "silent! cs add ".g:myGenCSCOPE_DB.g:myGenTagThisDir
+        "execute "cs show"
     elseif(g:reflash_flag==2) "DirDiff
         execute "silent! DirDiffUpdate"
+    elseif(g:reflash_flag==3 || g:reflash_flag==4) "multi folder gen
+        execute "silent! cs reset"
     endif
+
     return
 endfunction
 
@@ -1389,20 +1348,6 @@ function! MyGetInput(start,end,idx)
     return tmp
 endfunc
 
-"function! MyToggle()
-"    if(bufwinnr("__Tagbar__") != -1 && bufwinnr("NERD_tree_1") == -1)
-"        execute "TagbarToggle"
-"    elseif(bufwinnr("__Tagbar__") == -1 && bufwinnr("NERD_tree_1") != -1)
-"        execute "NERDTreeToggle"
-"    elseif(bufwinnr("__Tagbar__") != -1 && bufwinnr("NERD_tree_1") != -1)
-"        execute "NERDTreeToggle"
-"        execute "TagbarToggle"
-"        2 wincmd w
-"    else
-"        execute "TagbarToggle"
-"        execute "NERDTreeToggle"
-"    endif
-"endfunction
 
 let g:mySavePrePos = 0
 let g:mySaveNextPos = 0
