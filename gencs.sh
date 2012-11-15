@@ -11,5 +11,5 @@ exgentype='-name "*.c" -o -name "*.h" -o -name "*.cpp" -o -name "*.htm" -o -name
 for d in $genfolder
 do
     mkdir -p /CSCOPE/$d
-    eval 'find '$d' '$exgentype' > /CSCOPE/'$d'/cscope.files && cscope -bkq -i /CSCOPE/'$d'/cscope.files -f /CSCOPE/'$d'/cscope.out'
+    echo "find $d -type f $exgentype > /CSCOPE/$d/cscope.files && cscope -bkq -i /CSCOPE/$d/cscope.files -f /CSCOPE/$d/cscope.out"
 done
