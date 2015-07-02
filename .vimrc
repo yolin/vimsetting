@@ -64,6 +64,18 @@ Bundle 'vim-scripts/L9'
 "Bundle 'othree/vim-autocomplpop'
 Bundle 'ervandew/supertab'
 "gtrans.vim-1 lang=tw
+Bundle 'rking/ag.vim'
+
+"Note
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-notes'
+
+
+"ag setting
+let g:agprg="/usr/bin/ag --column"
+
+
+"
 let g:gtrans_DefaultLang = 'tw'
 let g:gtrans_Engine = 'google' " 或者 bing
 
@@ -251,7 +263,8 @@ nnoremap `<esc> :q<cr>
 noremap <leader><xF1> <esc>:NERDTreeFind<cr>
 noremap <xF1> <esc>:NERDTreeToggle<cr>
 noremap <xF2> <esc>:TagbarToggle<cr>:call MySwitchToWorkBuf()<cr>
-noremap <xF3> <esc>:!grep --color -irsnI <c-r>+ <c-r>=getcwd()<cr>
+"noremap <xF3> <esc>:!grep --color -irsnI <c-r>+ <c-r>=getcwd()<cr>
+noremap <xF3> <esc>:Ag <c-r>+ <c-r>=getcwd()<cr>
 "noremap <F4> <esc>:set noexpandtab softtabstop=4 shiftwidth=4 tabstop=4
 noremap <F4> <esc>:set expandtab!<cr>
 noremap <F5> <esc>:Gtrans<cr>
@@ -267,7 +280,8 @@ noremap <F12> <esc>:call ReloadAllCSCOPE()<cr>
 inoremap <xF1> <esc>:call MySwitchToWorkBuf()<cr>:NERDTreeToggle<cr>
 inoremap <leader><c-xF1> <esc>:NERDTreeFind<cr>
 inoremap <xF2> <esc>:call MySwitchToWorkBuf()<cr>:TagbarToggle<cr>
-inoremap <xF3> <esc>:!grep -irsnI --color <c-r>+ <c-r>=getcwd()<cr>
+"inoremap <xF3> <esc>:!grep -irsnI --color <c-r>+ <c-r>=getcwd()<cr>
+inoremap <xF3> <esc>:Ag <c-r>+ <c-r>=getcwd()<cr>
 "inoremap <F4> <esc>:set noexpandtab softtabstop=8 shiftwidth=8 tabstop=4
 inoremap <F4> <esc>:set expandtab!<cr>
 inoremap <F5> <esc>:Gtrans<cr>
@@ -279,7 +293,8 @@ inoremap <F10> <esc>:call ReloadCSCOPE()<cr>
 inoremap <F11> <esc>:cs show<cr>
 inoremap <F12> <esc>:call ReloadAllCSCOPE()<cr>
 
-vnoremap <xF3> y<esc>:!grep -irsnI --color <c-r>0 <c-r>=getcwd()<cr>
+"vnoremap <xF3> y<esc>:!grep -irsnI --color <c-r>0 <c-r>=getcwd()<cr>
+vnoremap <xF3> y<esc>:Ag <c-r>0 <c-r>=getcwd()<cr>
 
 
 noremap <leader>/ <esc>:noh<cr>
