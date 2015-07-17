@@ -368,10 +368,10 @@ au BufRead *css.html set filetype=javascript noexpandtab softtabstop=4 shiftwidt
 "au BufWritePost *.c,*.cpp,*.h silent! !cscope -bkq -i /CSCOPE/ISD2/MIPS32_APPS/sysconfig/cscope.files -f /CSCOPE/ISD2/MIPS32_APPS/sysconfig/cscope.out &
 set cscopequickfix=s-,c-,d-,i-,t-,e-
 "
-let g:myGenCSCOPE_DB = "/CSCOPE/"
+let g:myGenCSCOPE_DB = "~/CSCOPE/"
 
 function! ReloadAllCSCOPE()
-    let CSFOLDER=system('find /CSCOPE/ -name "*.out"')
+    let CSFOLDER=system('find ' .g:myGenCSCOPE_DB. ' -name "*.out"')
     silent! cs kill -1
     let l:csfolder = substitute(CSFOLDER, "\n", "  ", "g")
     let s:csarray = split(l:csfolder)
@@ -394,8 +394,8 @@ function! ReloadCSCOPE()
             cs add $CSCOPE_DB
             let i = 20
         else
-            let db = g:myGenCSCOPE_DB. getcwd() . "/cscope.out"
-            if filereadable(db)
+            let db = g:myGenCSCOPE_DB. getcwd() ."/cscope.out"
+            if filereadable(expand(db))
                 let $CSCOPE_DB = db
                 cs add $CSCOPE_DB
                 let i = 20
