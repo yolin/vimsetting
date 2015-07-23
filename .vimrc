@@ -102,10 +102,16 @@ colors molokai " vim color scheme
 set autoread " auto read when file is changed from outside
 set history=50 " keep 50 lines of command line history
 "set mouse=a " mouse support
-if has("gui_running") " GUI color and font settings
-  set guifont=Monaco:h14
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 16
+  elseif has("gui_macvim")
+    set guifont=Menlo\ Regular:h16
+  elseif has("gui_win32")
+    set guifont=Consolas:h13:cANSI
+  endif
   set t_Co=256 " 256 color mode
-end
+endif
 if has("gui_macvim") " macvim shift movement
   let macvim_hig_shift_movement = 1
 endif
