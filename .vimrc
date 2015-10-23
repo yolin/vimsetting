@@ -31,6 +31,7 @@ Bundle 'gmarik/vundle'
 "
 " original repos on github
 Bundle 'tomasr/molokai'
+Bundle 'NLKNguyen/papercolor-theme'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'airblade/vim-gitgutter'
 "Bundle "MarcWeber/vim-addon-mw-utils"
@@ -66,6 +67,9 @@ Bundle 'ervandew/supertab'
 "gtrans.vim-1 lang=tw
 Bundle 'rking/ag.vim'
 
+Bundle 'justinmk/vim-syntax-extra'
+
+
 "Note
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-notes'
@@ -98,10 +102,24 @@ set shiftwidth=4 " the number of space characters inserted for indentation
 "set smarttab
 "set autoindent
 syntax on " enable syntax highlighting
-colors molokai " vim color scheme
+
+"----------yolin molokai-----------
+"colors molokai " vim color scheme
+"Yolin: change molokai color
+"hi Visual     ctermbg=238
+"hi CursorLine ctermbg=237   cterm=none
+"hi Comment    ctermfg=102
+"hi Underlined ctermfg=78    cterm=underline
+"-------------- yolin end---------------
+
+"----------yolin papaercolor-----------
+set background=dark
+colorscheme PaperColor
+"--------------yolin end----------
+
 set autoread " auto read when file is changed from outside
 set history=50 " keep 50 lines of command line history
-"set mouse=a " mouse support
+set mouse=a " mouse support
 if has("gui_running")
   if has("gui_gtk2")
     set guifont=Inconsolata\ 16
@@ -119,8 +137,6 @@ set cursorline " highlight current line
 set clipboard=unnamed " yank to the system register (*) by default
 set showmatch " Cursor shows matching ) and }
 set showmode " Show current mode
-set backspace=2 " make backspace work like most other apps
-
 " disable sound on errors
 set noeb vb t_vb=
 
@@ -278,9 +294,9 @@ noremap <F6> <esc>:Reddit worldnews<cr>
 noremap <F7> <esc>:Reddit taiwan<cr>
 noremap <F8> <esc>:BufExplorer<cr>
 noremap <F9> <esc>:!gencs.sh <c-r>=getcwd()<cr>
-noremap <F10> <esc>:call ReloadCSCOPE()<cr>
-noremap <F11> <esc>:cs show<cr>
-noremap <F12> <esc>:call ReloadAllCSCOPE()<cr>
+noremap <F10> <esc>:call ReloadAllCSCOPE("ISD2")<cr>
+noremap <F11> <esc>:call ReloadAllCSCOPE("SmartOpenWrt")<cr>
+noremap <F12> <esc>:call ReloadAllCSCOPE("<c-r>=getcwd()<cr>")<cr>
 
 
 inoremap <xF1> <esc>:call MySwitchToWorkBuf()<cr>:NERDTreeToggle<cr>
@@ -295,9 +311,9 @@ inoremap <F6> <esc>:Reddit worldnews<cr>
 inoremap <F7> <esc>:Reddit taiwan<cr>
 inoremap <F8> <esc>:BufExplorer<cr>
 inoremap <F9> <esc>:!gencs.sh <c-r>=getcwd()<cr>
-inoremap <F10> <esc>:call ReloadCSCOPE()<cr>
-inoremap <F11> <esc>:cs show<cr>
-inoremap <F12> <esc>:call ReloadAllCSCOPE()<cr>
+inoremap <F10> <esc>:call ReloadAllCSCOPE("ISD2"")<cr>
+inoremap <F11> <esc>:call ReloadAllCSCOPE("SmartOpenWrt")<cr>
+inoremap <F12> <esc>:call ReloadAllCSCOPE("<c-r>=getcwd()<cr>")<cr>
 
 "vnoremap <xF3> y<esc>:!grep -irsnI --color <c-r>0 <c-r>=getcwd()<cr>
 vnoremap <xF3> y<esc>:Ag <c-r>0 <c-r>=getcwd()<cr>
@@ -376,8 +392,8 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-
 "
 let g:myGenCSCOPE_DB = "~/CSCOPE/"
 
-function! ReloadAllCSCOPE()
-    let CSFOLDER=system('find ' .g:myGenCSCOPE_DB. ' -name "*.out"')
+function! ReloadAllCSCOPE(var)
+    let CSFOLDER=system('find ' .g:myGenCSCOPE_DB. ' -name "*.out" |grep ' . a:var)
     silent! cs kill -1
     let l:csfolder = substitute(CSFOLDER, "\n", "  ", "g")
     let s:csarray = split(l:csfolder)
@@ -440,7 +456,7 @@ let g:ycm_filetype_blacklist = {
       \ 'gitcommit' : 1,
       \}
 
-
+let g:notes_directories = ['~/Documents/Notes']
 "let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 
 nnoremap <leader>. :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -510,13 +526,6 @@ function! MySwitchToWorkBuf()
 endfunction
 command! -nargs=* -complete=file MySwitchToWorkBuf call MySwitchToWorkBuf()
 
-
-
-"Yolin: change molokai color
-hi Visual     ctermbg=238
-hi CursorLine ctermbg=237   cterm=none
-hi Comment    ctermfg=102
-hi Underlined ctermfg=78    cterm=underline
 "-------------- yolin end---------------
 "
 "
@@ -526,4 +535,4 @@ hi Underlined ctermfg=78    cterm=underline
 command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> -
 command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 
-exec ReloadAllCSCOPE()
+"exec ReloadAllCSCOPE()
